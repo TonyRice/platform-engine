@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+from .TypeUtils import TypeUtils
 from .TypeResolver import TypeResolver
 from ..Exceptions import StoryscriptRuntimeError
 
@@ -47,7 +48,13 @@ class Resolver:
                     item = cls.range(path['range'], item, data)
                 else:
                     resolved = Resolver.object(path, data)
-                    item = item[resolved]
+                    # allow a namedtuple to use keys or index
+                    # to retrieve data.
+                    if TypeUtils.isnamedtuple(item) and \
+                            isinstance(resolved, str):
+                        item = item._asdict()[resolved]
+                    else:
+                        item = item[resolved]
             return item
         except IndexError:
             raise StoryscriptRuntimeError(
