@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 
-from .TypeUtils import TypeUtils
 from .TypeResolver import TypeResolver
+from .TypeUtils import TypeUtils
 from ..Exceptions import StoryscriptRuntimeError
 
 
