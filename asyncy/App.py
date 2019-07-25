@@ -79,6 +79,7 @@ class App:
             'hostname': f'{self.app_dns}.{self.config.APP_DOMAIN}',
             'version': self.version
         }
+        self.global_context = {}
 
     def image_pull_policy(self):
         if self.always_pull_images is True:
@@ -173,7 +174,8 @@ class App:
         register with the gateway, and queue cron jobs.
         """
         for story_name in self.entrypoint:
-            await Stories.run(self, self.logger, story_name)
+            await Stories.run(self, self.logger, story_name,
+                              context=self.global_context)
 
     def add_subscription(self, sub_id: str,
                          streaming_service: StreamingService,
