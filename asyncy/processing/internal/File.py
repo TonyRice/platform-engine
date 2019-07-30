@@ -24,6 +24,18 @@ def safe_path(story, path):
     return f'{story.get_tmp_dir()}{os.fspath(path)}'
 
 
+@Decorators.create_service(name='file', command='mkdir', arguments={
+    'path': {'type': 'string'}
+})
+async def file_mkdir(story, line, resolved_args):
+    path = safe_path(story, resolved_args['path'])
+    try:
+        os.makedirs(path, exist_ok=True)
+    except IOError as e:
+        raise StoryscriptError(message=f'Failed to create directory: {e}',
+                               story=story, line=line)
+
+
 @Decorators.create_service(name='file', command='write', arguments={
     'path': {'type': 'string'},
     'content': {'type': 'any'}
@@ -31,20 +43,31 @@ def safe_path(story, path):
 async def file_write(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
     try:
-        with open(path, 'w') as f:
-            f.write(resolved_args['content'])
-    except IOError as e:
+        content = resolved_args['content']
+        if isinstance(content, bytes):
+            mode = 'wb'
+        else:
+            mode = 'w'
+        with open(path, mode) as f:
+            f.write(content)
+    except (KeyError, IOError) as e:
         raise StoryscriptError(message=f'Failed to write to file: {e}',
                                story=story, line=line)
 
 
 @Decorators.create_service(name='file', command='read', arguments={
-    'path': {'type': 'string'}
+    'path': {'type': 'string'},
+    'raw': {'type': 'boolean'}
 }, output_type='string')
 async def file_read(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
+    raw = resolved_args.get('raw', False)
     try:
-        with open(path, 'r') as f:
+        if raw:
+            mode = 'rb'
+        else:
+            mode = 'r'
+        with open(path, mode) as f:
             return f.read()
     except IOError as e:
         raise StoryscriptError(message=f'Failed to read file: {e}',
