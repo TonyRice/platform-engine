@@ -69,7 +69,7 @@ class Lexicon:
         """
         Executes a single line by calling the Lexicon for various operations.
 
-        To execute a function completely, see Stories#call.
+        To execute a function completely, see Lexicon#call.
 
         :return: Returns the next line number to be executed
         (return value from Lexicon), or None if there is none.
@@ -99,6 +99,8 @@ class Lexicon:
                     return await Lexicon.ret(logger, story, line)
                 elif method == 'break':
                     return await Lexicon.break_(logger, story, line)
+                elif method == 'continue':
+                    return await Lexicon.continue_(logger, story, line)
                 else:
                     raise NotImplementedError(
                         f'Unknown method to execute: {method}'
