@@ -52,7 +52,7 @@ class Resolver:
                     # to retrieve data.
                     if TypeUtils.isnamedtuple(item) and \
                             isinstance(resolved, str):
-                        item = item._asdict()[resolved]
+                        item = getattr(item, resolved)
                     else:
                         item = item[resolved]
             return item
