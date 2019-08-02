@@ -4,6 +4,7 @@ from unittest.mock import call
 import pytest
 from pytest import mark
 
+from storyruntime.Exceptions import StoryscriptError
 from storyruntime.entities.Multipart import FileFormField
 from storyruntime.utils import Resolver
 from storyruntime.utils.TypeUtils import TypeUtils
@@ -83,3 +84,37 @@ def test_path(patch, paths):
         assert resolved == ['1', '2']
 
     TypeUtils.isnamedtuple.assert_has_calls(nt_calls)
+
+
+@mark.parametrize('paths', [
+    [
+        'r',
+        {'dot': 'file', '$OBJECT': 'dot'},
+        {'string': 'invalid', '$OBJECT': 'string'}
+    ],
+    [
+        'r',
+        {'dot': 'file', '$OBJECT': 'dot'},
+        {'int': 5, '$OBJECT': 'int'}
+    ],
+    [
+        'r',
+        {'dot': 'array', '$OBJECT': 'dot'},
+        {'int': 5, '$OBJECT': 'int'}
+    ]
+])
+def test_path_invalid_key(patch, paths):
+    patch.object(Resolver, 'object', side_effect=Resolver.object)
+    data = {
+        'r': {
+            'file': FileFormField(
+                name='file',
+                body=b'body',
+                filename='file',
+                content_type='content_type'
+            ),
+            'array': ['1', '2', '3']
+        }
+    }
+    with pytest.raises(StoryscriptError):
+        Resolver.path(paths, data)
