@@ -57,7 +57,8 @@ class Stories:
                 raise StoryscriptRuntimeError('No longer supported')
             elif block:
                 with story.new_frame(block):
-                    await Lexicon.execute_block(logger, story, story.line(block))
+                    await Lexicon.execute_block(logger, story,
+                                                story.line(block))
             else:
                 await cls.execute(logger, story)
 

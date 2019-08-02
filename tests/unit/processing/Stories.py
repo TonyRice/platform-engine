@@ -135,4 +135,3 @@ async def test_stories_run_prepare(patch, app, logger, async_mock):
     Stories.story().prepare.assert_called_with('context')
     Stories.execute.mock \
         .assert_called_with(logger, Stories.story())
-

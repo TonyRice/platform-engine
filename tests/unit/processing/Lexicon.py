@@ -3,8 +3,12 @@ import collections
 from unittest import mock
 from unittest.mock import MagicMock, Mock
 
+import pytest
+from pytest import fixture, mark
+
 from storyruntime import Metrics
-from storyruntime.Exceptions import InvalidKeywordUsage, StoryscriptError, StoryscriptRuntimeError
+from storyruntime.Exceptions import InvalidKeywordUsage, \
+    StoryscriptError, StoryscriptRuntimeError
 from storyruntime.Story import Story
 from storyruntime.Types import StreamingService
 from storyruntime.constants import ContextConstants
@@ -13,9 +17,6 @@ from storyruntime.constants.LineSentinels import LineSentinels
 from storyruntime.processing import Lexicon, Stories
 from storyruntime.processing.Mutations import Mutations
 from storyruntime.processing.Services import Services
-
-import pytest
-from pytest import fixture, mark
 
 
 @fixture
@@ -508,7 +509,6 @@ async def test_lexicon_execute_block(patch, logger, story,
         side_effect=['4', line_4_result, '6']))
 
     line = story.line
-    print('Line', line)
     story.context = {
         ContextConstants.service_event: {'data': {'foo': 'bar'}}
     }
@@ -523,35 +523,34 @@ async def test_lexicon_execute_block(patch, logger, story,
 
     assert story.context[ContextConstants.service_output] == 'foo_client'
     assert story.context['foo_client'] \
-           == story.context[ContextConstants.service_event]['data']
+        == story.context[ContextConstants.service_event]['data']
 
     if LineSentinels.is_sentinel(line_4_result):
         assert [
-                   mock.call(logger, story, '3'),
-                   mock.call(logger, story, '4')
-               ] == Lexicon.execute_line.mock.mock_calls
+            mock.call(logger, story, '3'),
+            mock.call(logger, story, '4')
+        ] == Lexicon.execute_line.mock.mock_calls
         assert [
-                   mock.call('3'),
-                   mock.call('4')
-               ] == story.line.mock_calls
+            mock.call('3'),
+            mock.call('4')
+        ] == story.line.mock_calls
         if line_4_result == LineSentinels.RETURN:
             assert execute_block_return is None
         else:
             assert execute_block_return == line_4_result
     else:
         assert [
-                   mock.call(logger, story, '3'),
-                   mock.call(logger, story, '4'),
-                   mock.call(logger, story, '5')
-               ] == Lexicon.execute_line.mock.mock_calls
+            mock.call(logger, story, '3'),
+            mock.call(logger, story, '4'),
+            mock.call(logger, story, '5')
+        ] == Lexicon.execute_line.mock.mock_calls
         assert [
-                   mock.call('3'),
-                   mock.call('4'),
-                   mock.call('5'),
-                   mock.call('6'),
-                   mock.call('1')
-               ] == story.line.mock_calls
-
+            mock.call('3'),
+            mock.call('4'),
+            mock.call('5'),
+            mock.call('6'),
+            mock.call('1')
+        ] == story.line.mock_calls
 
 
 @mark.asyncio
