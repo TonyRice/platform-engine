@@ -554,7 +554,7 @@ async def test_lexicon_execute_block(patch, logger, story,
 
 
 @mark.asyncio
-async def test_stories_execute_does_not_wrap(patch, story, async_mock):
+async def test_lexicon_execute_does_not_wrap(patch, story, async_mock):
     def exc(*args):
         raise StoryscriptError()
 
