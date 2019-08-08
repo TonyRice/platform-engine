@@ -5,7 +5,7 @@ from .Mutations import Mutations
 from .Services import Services
 from .. import Metrics
 from ..Exceptions import InvalidKeywordUsage, StoryscriptError, \
-    StoryscriptRuntimeError
+    StoryscriptRuntimeError, ArgumentNotFoundError
 from ..Story import Story
 from ..Types import StreamingService
 from ..constants import ContextConstants
@@ -390,6 +390,10 @@ class Lexicon:
 
     @staticmethod
     def throw(logger, story, line):
+        if line['args'] is None or \
+                len(line['args'] == 0):
+            raise ArgumentNotFoundError()
+
         err_str = story.resolve(line['args'][0])
         raise StoryscriptError(message=err_str, story=story, line=line)
 
