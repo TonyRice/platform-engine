@@ -103,6 +103,8 @@ class Lexicon:
                     return await Lexicon.continue_(logger, story, line)
                 elif method == 'try':
                     return await Lexicon.try_catch(logger, story, line)
+                elif method == 'throw':
+                    return await Lexicon.throw(logger, story, line)
                 else:
                     raise NotImplementedError(
                         f'Unknown method to execute: {method}'
@@ -385,6 +387,11 @@ class Lexicon:
                 raise re
 
         return await next_block_or_finally()
+
+    @staticmethod
+    def throw(logger, story, line):
+        err_str = story.resolve(line['args'][0])
+        raise StoryscriptError(message=err_str, story=story, line=line)
 
     @staticmethod
     async def for_loop(logger, story, line):
