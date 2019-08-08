@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 
 from pytest import mark
 
-from storyruntime.Exceptions import StackOverflowException, StoryscriptError,\
+from storyruntime.Exceptions import StackOverflowException, StoryscriptError, \
     StoryscriptRuntimeError, TypeAssertionRuntimeError, TypeValueRuntimeError
 from storyruntime.Story import Story
 from storyruntime.processing import Stories
@@ -831,6 +831,17 @@ class TestSuite:
                      ])
         ]
     ),
+    TestSuite(
+        preparation_lines='throw "error"',
+        cases=[
+            TestCase(
+                assertion=RuntimeExceptionAssertion(
+                    exception_type=StoryscriptError,
+                    message='error'
+                )
+            ),
+        ]
+    ),
 ])
 @mark.asyncio
 async def test_mutation(suite: TestSuite, logger):
@@ -1520,8 +1531,8 @@ async def test_range_mutations(suite: TestSuite, logger):
             ),
             TestCase(
                 append=f'a = {math.pi / 4}\n'
-                       'b = a.tan()\n'
-                       'c = b.approxEqual(value: 1)',
+                'b = a.tan()\n'
+                'c = b.approxEqual(value: 1)',
                 assertion=ContextAssertion(key='c', expected=True)
             ),
             TestCase(
@@ -1558,8 +1569,8 @@ async def test_range_mutations(suite: TestSuite, logger):
             ),
             TestCase(
                 append=f'a = {math.pi / 4}\n'
-                       'b = a.tan()\n'
-                       'c = b.approxEqual(value: 1)',
+                'b = a.tan()\n'
+                'c = b.approxEqual(value: 1)',
                 assertion=ContextAssertion(key='c', expected=True)
             ),
             TestCase(
