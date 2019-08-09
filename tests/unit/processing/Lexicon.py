@@ -685,15 +685,15 @@ async def test_lexicon_try_catch(patch, magic, logger, tree):
 
 async def test_lexicon_throw(logger, story):
     story.tree = {
-        "1": {
-            "method": "throw",
-            "ln": "1",
-            "col_start": "1",
-            "col_end": "2",
-            "args": [
+        '1': {
+            'method': 'throw',
+            'ln': '1',
+            'col_start': '1',
+            'col_end': '2',
+            'args': [
                 {
-                    "$OBJECT": "string",
-                    "string": "error"
+                    '$OBJECT': 'string',
+                    'string': 'error'
                 }
             ]
         }
