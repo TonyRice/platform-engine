@@ -391,7 +391,7 @@ class Lexicon:
     @staticmethod
     def throw(logger, story, line):
         if line['args'] is None or \
-                len(line['args'] == 0):
+                len(line['args']) == 0:
             raise ArgumentNotFoundError()
 
         err_str = story.resolve(line['args'][0])
