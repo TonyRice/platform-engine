@@ -390,11 +390,12 @@ class Lexicon:
 
     @staticmethod
     def throw(logger, story, line):
-        if line['args'] is None or \
-                len(line['args']) == 0:
-            raise ArgumentNotFoundError()
+        if line['args'] is not None and \
+                len(line['args'] > 0):
+            err_str = story.resolve(line['args'][0])
+        else:
+            err_str = None
 
-        err_str = story.resolve(line['args'][0])
         raise StoryscriptError(message=err_str, story=story, line=line)
 
     @staticmethod
