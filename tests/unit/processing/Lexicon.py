@@ -683,19 +683,21 @@ async def test_lexicon_try_catch(patch, magic, logger, tree):
     assert 'err' not in story.context
 
 
-async def test_lexicon_throw(logger, story):
+@mark.parametrize('args', [
+    [{
+        '$OBJECT': 'string',
+        'string': 'error'
+    }],
+    []
+])
+async def test_lexicon_throw(logger, story, args):
     story.tree = {
         '1': {
             'method': 'throw',
             'ln': '1',
             'col_start': '1',
             'col_end': '2',
-            'args': [
-                {
-                    '$OBJECT': 'string',
-                    'string': 'error'
-                }
-            ]
+            'args': args
         }
     }
     with pytest.raises(StoryscriptError):
