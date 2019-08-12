@@ -1606,8 +1606,8 @@ async def test_range_mutations(suite: TestSuite, logger):
             ),
             TestCase(
                 append=f'a = {math.pi / 4}\n'
-                'b = a.tan()\n'
-                'c = b.approxEqual(value: 1)',
+                       'b = a.tan()\n'
+                       'c = b.approxEqual(value: 1)',
                 assertion=ContextAssertion(key='c', expected=True)
             ),
             TestCase(
@@ -1644,8 +1644,8 @@ async def test_range_mutations(suite: TestSuite, logger):
             ),
             TestCase(
                 append=f'a = {math.pi / 4}\n'
-                'b = a.tan()\n'
-                'c = b.approxEqual(value: 1)',
+                       'b = a.tan()\n'
+                       'c = b.approxEqual(value: 1)',
                 assertion=ContextAssertion(key='c', expected=True)
             ),
             TestCase(
