@@ -427,8 +427,8 @@ class Lexicon:
             # and we will address this in the future.
             if call_count >= 1000000:
                 logger.warn(
-                    "Call count limit reached within while loop. "
-                    "Only 1 million iterations allowed"
+                    'Call count limit reached within while loop. '
+                    'Only 1 million iterations allowed.'
                 )
                 break
 
