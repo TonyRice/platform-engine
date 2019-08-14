@@ -438,11 +438,11 @@ class Lexicon:
             # note this is only a temporary solution,
             # and we will address this in the future.
             if call_count >= 1000000:
-                logger.warn(
-                    'Call count limit reached within while loop. '
-                    'Only 1 million iterations allowed.'
+                raise StoryscriptRuntimeError(
+                    message='Call count limit reached within while loop. '
+                            'Only 1 million iterations allowed.',
+                    story=story, line=line
                 )
-                break
 
             result = await Lexicon.execute_block(logger, story, line)
 
