@@ -480,11 +480,6 @@ class Lexicon:
                 'return may not be used with a value in a when block'
 
             return LineSentinels.RETURN
-        elif cls._does_line_have_parent_method(story, line, 'while'):
-            assert len(args) == 0, \
-                'return may not be used with a value in a while block'
-
-            return LineSentinels.RETURN
         elif cls._does_line_have_parent_method(story, line, 'function'):
             returned_value = None
 
