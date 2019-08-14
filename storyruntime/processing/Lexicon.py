@@ -438,9 +438,10 @@ class Lexicon:
 
             if result == LineSentinels.CONTINUE:
                 continue
-            elif result == LineSentinels.BREAK or \
-                    result == LineSentinels.RETURN:
+            elif result == LineSentinels.BREAK:
                 break
+            elif LineSentinels.is_sentinel(result):
+                return result
 
         return Lexicon.line_number_or_none(story.next_block(line))
 
