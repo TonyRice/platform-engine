@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
+import asyncio
 import time
 
 from .Mutations import Mutations
 from .Services import Services
 from .. import Metrics
-from ..Exceptions import ArgumentNotFoundError, InvalidKeywordUsage, \
+from ..Exceptions import InvalidKeywordUsage, \
     StoryscriptError, StoryscriptRuntimeError
 from ..Story import Story
 from ..Types import StreamingService
 from ..constants import ContextConstants
 from ..constants.LineConstants import LineConstants
 from ..constants.LineSentinels import LineSentinels, ReturnSentinel
+from ..utils import Resolver
 
 
 class Lexicon:
@@ -430,21 +432,21 @@ class Lexicon:
 
     @staticmethod
     async def while_(logger, story, line):
-        should_break = False
         call_count = 0
-        while story.resolve(line['args'][0], encode=False) and \
-                not should_break:
-
+        while Resolver.resolve(line['args'][0], story.context):
             # note this is only a temporary solution,
             # and we will address this in the future.
-            if call_count >= 1000000:
+            if call_count >= 100000:
                 raise StoryscriptRuntimeError(
                     message='Call count limit reached within while loop. '
-                            'Only 1 million iterations allowed.',
+                            'Only 100000 iterations allowed.',
                     story=story, line=line
                 )
 
             result = await Lexicon.execute_block(logger, story, line)
+
+            # Let's sleep so we don't take up 100% of the CPU
+            await asyncio.sleep(0.0002)
 
             call_count += 1
 

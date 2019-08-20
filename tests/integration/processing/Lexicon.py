@@ -843,17 +843,6 @@ class TestSuite:
         ]
     ),
     TestSuite(
-        preparation_lines='i = 0',
-        cases=[
-            TestCase(
-                append='while true\n'
-                       '   i = i + 1\n'
-                       'outside = true',
-                assertion=[ContextAssertion(key='outside', expected=True),
-                           ContextAssertion(key='i', expected=1000000)])
-        ]
-    ),
-    TestSuite(
         preparation_lines='i = 0\na = 0',
         cases=[
             TestCase(
@@ -866,6 +855,38 @@ class TestSuite:
                 assertion=[ContextAssertion(key='outside', expected=True),
                            ContextAssertion(key='i', expected=100),
                            ContextAssertion(key='a', expected=10)])
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while i < 2000000\n'
+                       '   i = i + 1\n',
+                assertion=RuntimeExceptionAssertion(
+                    exception_type=StoryscriptRuntimeError,
+                    context_assertion=ContextAssertion(
+                        key='i',
+                        expected=100000
+                    )
+                )
+            )
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while true\n'
+                       '   i = i + 1\n',
+                assertion=RuntimeExceptionAssertion(
+                    exception_type=StoryscriptRuntimeError,
+                    context_assertion=ContextAssertion(
+                        key='i',
+                        expected=100000
+                    )
+                )
+            )
         ]
     ),
 ])
