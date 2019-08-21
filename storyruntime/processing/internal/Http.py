@@ -40,7 +40,7 @@ async def http_post(story, line, resolved_args):
     charset = 'utf-8'
 
     content_type = response.headers.get('Content-Type')
-    if False and content_type is not None and \
+    if content_type is not None and \
             'charset' in content_type:
         parsed = cgi.parse_header(content_type)
 
