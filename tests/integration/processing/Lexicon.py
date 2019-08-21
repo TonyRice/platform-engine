@@ -76,8 +76,10 @@ class TestSuite:
         preparation_lines='a = http fetch '
                           'url: "https://stories.storyscriptapp.com/status"',
         cases=[
-            TestCase(assertion=ContextAssertion(key='a',
-                                                expected='OK'))
+            TestCase(assertion=ContextAssertion(
+                key='a',
+                expected='OK'
+            ))
         ]
     ),
     TestSuite(
@@ -86,10 +88,9 @@ class TestSuite:
                           'passed = true',
         cases=[
             TestCase(assertion=ContextAssertion(
-                    key='passed',
-                    expected=True
-                )
-            )
+                key='passed',
+                expected=True
+            ))
         ]
     ),
     TestSuite(

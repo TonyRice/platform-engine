@@ -73,13 +73,17 @@ async def test_service_http_fetch(patch, story, line, json_response,
     fetch_mock.code = method[1]
     if charset == 'utf-16':
         fetch_mock.body = '汉字'.encode('utf-16')
-        fetch_mock.headers = {'Content-Type': 'text/html; charset=UTF-16'}
+        fetch_mock.headers = {
+            'Content-Type': 'text/html; charset=UTF-16'
+        }
     elif json_response:
         fetch_mock.body = '{"hello": "world"}'.encode('utf-8')
-        fetch_mock.headers = {'Content-Type': 'application/json; charset=UTF-8'}
+        fetch_mock.headers = {
+            'Content-Type': 'application/json; charset=UTF-8'
+        }
     else:
-        fetch_mock.headers = {'Content-Type': 'text/html; utf-8'}
-        fetch_mock.body = 'hello world!'.encode('utf-8')
+        fetch_mock.headers = {'Content-Type': f'text/html; {charset}'}
+        fetch_mock.body = 'hello world!'.encode(charset)
 
     if round(method[1] / 100) != 2:
         with pytest.raises(StoryscriptError):
