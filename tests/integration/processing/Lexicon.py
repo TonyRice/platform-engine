@@ -929,6 +929,20 @@ class TestSuite:
             )
         ]
     ),
+    TestSuite(
+        preparation_lines='function foo returns boolean\n'
+                          '   while true\n'
+                          '      return true\n',
+        cases=[
+            TestCase(
+                append='value = foo()',
+                assertion=ContextAssertion(
+                    key='value',
+                    expected=True
+                )
+            )
+        ]
+    ),
 ])
 @mark.asyncio
 async def test_mutation(suite: TestSuite, logger):
