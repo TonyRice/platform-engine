@@ -445,8 +445,9 @@ class Lexicon:
 
             result = await Lexicon.execute_block(logger, story, line)
 
-            # Let's sleep so we don't take up 100% of the CPU
-            await asyncio.sleep(0.0002)
+            if call_count % 10 == 0:
+                # Let's sleep so we don't take up 100% of the CPU
+                await asyncio.sleep(0.0002)
 
             call_count += 1
 
