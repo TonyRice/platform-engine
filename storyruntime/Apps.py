@@ -197,8 +197,6 @@ class Apps:
 
     @classmethod
     def get(cls, app_id: str):
-
-        print('APPSSS', cls.apps)
         return cls.apps[app_id]
 
     @classmethod
